@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Bank</title>
+    <style>
+        /* General Page Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: rgba(0, 0, 0, 0.9); /* Dark background */
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Main Container */
+        .container {
+            width: 50%;
+            height: 90vh; /* Increased height */
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Header */
+        .header-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 22px;
+            color: #ffffff;
+        }
+
+        /* Inputs & Buttons */
+        select, input, button {
+            width: 95%;
+            padding: 12px;
+            margin: 5px 0;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: rgba(50, 50, 50, 0.8);
+            color: #ffffff;
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        button {
+            background: #007bff;
+            color: #ffffff;
+            font-weight: bold;
+            border: 1px solid white;
+            width: 48%;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .secondary-btn {
+            background: #28a745;
+            color: #ffffff;
+        }
+
+        /* Questions Box */
+        .questions {
+            text-align: left;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(40, 40, 40, 0.8);
+            border-radius: 5px;
+            max-height: 550px; /* Increased height */
+            overflow-y: auto;
+            border: 1px solid white;
+            width: 95%;
+        }
+
+        .questions p {
+            font-size: 15px;
+            padding: 8px;
+            background: rgba(60, 60, 60, 0.7);
+            margin: 5px 0;
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        /* Hover Effect */
+        
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-container">
+            <h1>Question Bank</h1>
+            <button class="secondary-btn" onclick="location.href='/download_page'">View Questions</button>
+        </div>
+
+        <label>Select Language:</label>
+        <select id="language">
+            <option value="Python">Python</option>
+            <option value="C++">C++</option>
+            <option value="Java">Java</option>
+            <option value="C">C</option>
+            <option value="JavaScript">JavaScript</option>
+        </select>
+
+        <label>Select Difficulty:</label>
+        <select id="difficulty">
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+        </select>
+
+        <label>Number of Questions:</label>
+        <input type="number" id="num_questions" min="1" max="50" value="5">
+
+        <button onclick="fetchQuestions()">Get Questions</button>
+
+        <div class="questions" id="questionList">
+            <p>Select language, difficulty, and number of questions to get results...</p>
+        </div>
+    </div>
+
+    <script>
+        function fetchQuestions() {
+            let language = document.getElementById("language").value;
+            let difficulty = document.getElementById("difficulty").value;
+            let num_questions = document.getElementById("num_questions").value;
+
+            fetch('/get_questions', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({language, difficulty, num_questions})
+            })
+            .then(response => response.json())
+            .then(data => {
+                let questionDiv = document.getElementById("questionList");
+                questionDiv.innerHTML = "<h3>Here are your questions:</h3>";
+                data.questions.forEach((question, index) => {
+                    questionDiv.innerHTML += `<p>${index + 1}. ${question}</p>`;
+                });
+            });
+        }
+    </script>
+</body>
+</html>

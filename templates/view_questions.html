@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Questions</title>
+    <style>
+        /* General Page Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: rgba(0, 0, 0, 0.9);
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Main Container */
+        .container {
+            width: 50%;
+            max-width: 800px;
+            height: 90vh;
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Header */
+        .header-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 22px;
+            color: #ffffff;
+        }
+
+        /* Inputs & Buttons */
+        select, button {
+            width: 95%;
+            padding: 12px;
+            margin: 5px 0;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: rgba(50, 50, 50, 0.8);
+            color: #ffffff;
+        }
+
+        button {
+            background: #007bff;
+            color: #ffffff;
+            font-weight: bold;
+            border: 1px solid white;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .secondary-btn {
+            background: #28a745;
+            color: #ffffff;
+        }
+
+        /* Questions Box */
+        .questions {
+            text-align: left;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(40, 40, 40, 0.8);
+            border-radius: 5px;
+            max-height: 550px;
+            overflow-y: auto;
+            border: 1px solid white;
+            width: 95%;
+        }
+
+        /* Hover Effect */
+        .questions p {
+            font-size: 15px;
+            padding: 8px;
+            background: rgba(60, 60, 60, 0.7);
+            margin: 5px 0;
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+            color: #ffffff;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .questions p:hover {
+            background: #444;
+            transform: scale(1.2);
+            z-index: 100;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%) scale(1.2);
+            width: 80%;
+            text-align: center;
+            padding: 12px;
+            font-size: 18px;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                min-height: 85vh;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            select, button {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .questions {
+                max-height: 350px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-container">
+            <button class="secondary-btn" onclick="location.href='/'">Question Bank</button>
+            <h1>View Questions</h1>
+        </div>
+
+        <label>Select Language:</label>
+        <select id="language">
+            <option value="Python">Python</option>
+            <option value="C++">C++</option>
+            <option value="Java">Java</option>
+            <option value="C">C</option>
+            <option value="JavaScript">JavaScript</option>
+        </select>
+
+        <label>Select Difficulty Level:</label>
+        <select id="difficulty">
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+        </select>
+
+        <button onclick="viewQuestions()">View Questions</button>
+
+        <div class="questions" id="questionList">
+            <p>Select language and difficulty to view questions...</p>
+        </div>
+    </div>
+
+    <script>
+        function viewQuestions() {
+            let language = document.getElementById("language").value;
+            let difficulty = document.getElementById("difficulty").value;
+
+            fetch('/get_all_questions', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({language, difficulty})
+            })
+            .then(response => response.json())
+            .then(data => {
+                let questionDiv = document.getElementById("questionList");
+                questionDiv.innerHTML = "<h3>Here are your questions:</h3>";
+                data.questions.forEach((question, index) => {
+                    questionDiv.innerHTML += `<p>${index + 1}. ${question}</p>`;
+                });
+            });
+        }
+    </script>
+</body>
+</html>
