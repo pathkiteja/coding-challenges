@@ -43,5 +43,5 @@ pip install -r requirements.txt
 4️⃣ Run the Flask Application
 python app.py
 
-check my youtube channel 
-**https://youtu.be/WMYGVAVgZjs**
+check my youtube channel
+https://youtu.be/WMYGVAVgZjs
