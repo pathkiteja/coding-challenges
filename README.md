@@ -1,6 +1,6 @@
 # 📚 Question Bank - Flask Web App
 
-A Flask-based web application that serves coding questions dynamically. The project is built with **Python (Flask)** and deployed using **Vercel**. The app includes an API endpoint for fetching questions and an interactive UI to display them.........
+A Flask-based web application that serves coding questions dynamically. The project is built with **Python (FLASK)** and deployed using **Render**. The app includes an API endpoint for fetching questions and an interactive UI to display them.........
 
 ---
 
@@ -26,7 +26,6 @@ A Flask-based web application that serves coding questions dynamically. The proj
 │── app.py                    # Main Flask application
 │── index.py                  # Alternative entry point
 │── requirements.txt          # Dependencies for deployment
-│── vercel.json               # Vercel configuration file
 │── .gitignore                # Ignore unnecessary files
 │── README.md                 # Documentation file (this file)
 
